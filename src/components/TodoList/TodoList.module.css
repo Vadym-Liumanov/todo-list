@@ -1,7 +1,8 @@
 .card {
     border: var(--main-border);
     border-radius: 4px;
-    padding: 4px 1em;
+    padding: 0.7em 1em 0.9em;
+    margin-bottom: 1em;
 }
 
 .card__title {
@@ -13,7 +14,7 @@
 }
 
 .card__inputTaskBlock {
-    margin-bottom: 0.7em;
+    margin-bottom: 0.8em;
 }
 
 .card__taskTitleInput {
@@ -34,12 +35,16 @@
 }
 
 .card__addTaskBtn:hover {
-    opacity: 0,.9;
+    opacity: 0, .9;
 }
 
 .card__addTaskBtn:active {
     position: relative;
     top: 1px;
+}
+
+.card__tasks {
+    margin-bottom: 0.8em;
 }
 
 .card__task {
@@ -63,10 +68,33 @@
 }
 
 .removeTaskBtn:hover {
-    opacity: 0,.9;
+    opacity: 0, .9;
 }
 
 .removeTaskBtn:active {
+    position: relative;
+    top: 1px;
+}
+
+.card__filterBlock {
+    display: flex;
+    gap: 0.5em;
+}
+
+.card__filterBtn {
+    background-color: var(--main-bg);
+    border-radius: 4px;
+    border: var(--main-border);
+    font-weight: 500;
+    line-height: 1.8;
+    padding: 0 0.5em;
+}
+
+.card__filterBtn:hover {
+    opacity: 0, .9;
+}
+
+.card__filterBtn:active {
     position: relative;
     top: 1px;
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './App.module.css'
 import TodoList from './components/TodoList/TodoList'
 
@@ -14,41 +14,55 @@ export type TodoListType = {
   tasks: TaskType[]
 }
 
-const TodoLists: TodoListType[] = [
-  {
-    id: 1,
-    title: 'What to lean',
-    tasks: [
-      {
-        id: 1,
-        taskTitle: 'HTML',
-        isDone: true
-      },
-      {
-        id: 2,
-        taskTitle: 'CSS',
-        isDone: true
-      },
-      {
-        id: 3,
-        taskTitle: 'JS',
-        isDone: true
-      },
-      {
-        id: 4,
-        taskTitle: 'React',
-        isDone: true
-      }
-    ]
-  }
-]
 
-const data: TodoListType = TodoLists[0]
 
 function App() {
+  const initialTodoLists: TodoListType[] = [
+    {
+      id: 1,
+      title: 'What to lean',
+      tasks: [
+        {
+          id: 1,
+          taskTitle: 'HTML',
+          isDone: true
+        },
+        {
+          id: 2,
+          taskTitle: 'CSS',
+          isDone: true
+        },
+        {
+          id: 3,
+          taskTitle: 'JS',
+          isDone: true
+        },
+        {
+          id: 4,
+          taskTitle: 'React',
+          isDone: false
+        }
+      ]
+    },
+  ]
+
+  const [todoLists, setTodoLists] = useState<TodoListType[]>(initialTodoLists)
+
+  function onInputNewTask(todoListId: number, taskTitle: string) {
+    const newTask: TaskType = {
+      id: 1,
+      taskTitle: 'New task',
+      isDone: false
+    }
+  }
+
   return (
     <div className={styles.wrapper}>
-      <TodoList data={data} />
+      {todoLists.map((list) => {
+        return (
+          <TodoList data={list} key={list.id} />
+        )
+      })}
     </div>
   )
 }
