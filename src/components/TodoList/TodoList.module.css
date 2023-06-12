@@ -1,0 +1,72 @@
+.card {
+    border: var(--main-border);
+    border-radius: 4px;
+    padding: 4px 1em;
+}
+
+.card__title {
+    font-size: 1.2em;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    line-height: 1.4;
+    margin-left: 1em;
+}
+
+.card__inputTaskBlock {
+    margin-bottom: 0.7em;
+}
+
+.card__taskTitleInput {
+    background-color: var(--main-bg);
+    padding: 0 0.8em;
+    border-radius: 4px;
+    line-height: 1.8;
+}
+
+.card__addTaskBtn {
+    background-color: var(--main-bg);
+    width: 1.8em;
+    height: 1.8em;
+    border-radius: 4px;
+    margin-left: 1em;
+    border: var(--main-border);
+    font-weight: 500;
+}
+
+.card__addTaskBtn:hover {
+    opacity: 0,.9;
+}
+
+.card__addTaskBtn:active {
+    position: relative;
+    top: 1px;
+}
+
+.card__task {
+    line-height: 1.5;
+}
+
+/* .task__checkInput {} */
+
+.task__name {
+    margin-left: 0.8em;
+}
+
+.removeTaskBtn {
+    background-color: var(--main-bg);
+    width: 1.3em;
+    height: 1.3em;
+    border-radius: 4px;
+    margin-left: 2em;
+    border: var(--main-border);
+    font-weight: 500;
+}
+
+.removeTaskBtn:hover {
+    opacity: 0,.9;
+}
+
+.removeTaskBtn:active {
+    position: relative;
+    top: 1px;
+}

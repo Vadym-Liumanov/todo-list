@@ -1,0 +1,7 @@
+.wrapper {
+    width: 400px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 1em 2em;
+    background-color: var(--page-bg);
+}
