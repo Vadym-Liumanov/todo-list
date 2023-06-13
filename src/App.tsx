@@ -1,44 +1,45 @@
 import React, { useState } from 'react'
+import { v4 } from 'uuid'
+
 import styles from './App.module.css'
 import TodoList from './components/TodoList/TodoList'
 
 export type TaskType = {
-  id: number
+  id: string
   taskTitle: string
   isDone: boolean
 }
 
 export type TodoListType = {
-  id: number
+  id: string
   title: string
   tasks: TaskType[]
 }
 
-
-
 function App() {
+
   const initialTodoLists: TodoListType[] = [
     {
-      id: 1,
+      id: v4(),
       title: 'What to lean',
       tasks: [
         {
-          id: 1,
+          id: v4(),
           taskTitle: 'HTML',
           isDone: true
         },
         {
-          id: 2,
+          id: v4(),
           taskTitle: 'CSS',
           isDone: true
         },
         {
-          id: 3,
+          id: v4(),
           taskTitle: 'JS',
           isDone: true
         },
         {
-          id: 4,
+          id: v4(),
           taskTitle: 'React',
           isDone: false
         }
@@ -48,19 +49,36 @@ function App() {
 
   const [todoLists, setTodoLists] = useState<TodoListType[]>(initialTodoLists)
 
-  function onInputNewTask(todoListId: number, taskTitle: string) {
+  function onInputNewTask(todoListId: string, taskTitle: string) {
     const newTask: TaskType = {
-      id: 1,
-      taskTitle: 'New task',
+      id: v4(),
+      taskTitle: taskTitle,
       isDone: false
     }
+    const updatedTodoLists: TodoListType[] = [...todoLists]
+    let updatedIndex = -1
+    updatedTodoLists.forEach((todoList, index) => {
+      if (todoList.id === todoListId) {
+        updatedIndex = index
+      }
+    })
+
+    if (updatedIndex >= 0) {
+      updatedTodoLists[updatedIndex].tasks.push(newTask)
+      setTodoLists(updatedTodoLists)
+    }
+
   }
 
   return (
     <div className={styles.wrapper}>
       {todoLists.map((list) => {
         return (
-          <TodoList data={list} key={list.id} />
+          <TodoList
+            key={list.id}
+            data={list}
+            onInputNewTask={onInputNewTask}
+          />
         )
       })}
     </div>

@@ -5,12 +5,13 @@ import styles from './TodoList.module.css'
 
 type PropsType = {
     data: TodoListType
+    onInputNewTask: (todoListId: string, taskTitle: string) => void
 }
 
-function TodoList({ data }: PropsType) {
-    const [taskTitle, setTaskTitle] = useState<string>("")
+function TodoList({ data, onInputNewTask }: PropsType) {
+    const [newTaskTitle, setNewTaskTitle] = useState<string>("")
     function onNewTaskTitleChange(e: ChangeEvent<HTMLInputElement>) {
-        setTaskTitle(e.target.value)
+        setNewTaskTitle(e.target.value)
     }
 
     return (
@@ -22,12 +23,17 @@ function TodoList({ data }: PropsType) {
                     type="text"
                     placeholder="input new task"
                     className={styles.card__taskTitleInput}
-                    value={taskTitle}
+                    value={newTaskTitle}
                     onChange={onNewTaskTitleChange}
                 />
                 <button
                     className={styles.card__addTaskBtn}
-                    onClick={() => { alert('Clicked!') }}
+                    onClick={() => {
+                        if (newTaskTitle !== "") {
+                            onInputNewTask(data.id, newTaskTitle)
+                            setNewTaskTitle("")
+                        }
+                    }}
                 >+</button>
             </div>
 
