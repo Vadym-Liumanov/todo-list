@@ -35,6 +35,11 @@ function TodoList({ data, onInputNewTask, onRemoveTask }: PropsType) {
                     className={styles.card__taskTitleInput}
                     value={newTaskTitle}
                     onChange={onNewTaskTitleChange}
+                    onKeyUp={(e) => {
+                        if (e.ctrlKey && e.code === 'Enter') {
+                            onAddNewTaskClick()
+                        }
+                    }}
                 />
                 <button
                     className={styles.card__addTaskBtn}
