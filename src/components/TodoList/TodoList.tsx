@@ -1,17 +1,46 @@
-import React, { ChangeEvent, useState } from "react"
-import { TodoListType } from "../../App"
+import React, { ChangeEvent, useEffect, useState } from "react"
+import { TaskType, TodoListType } from "../../App"
 
 import styles from './TodoList.module.css'
 import TaskItem from "../TaskItem/TaskItem"
 
+export type filterParamType = 'all' | 'completed' | 'uncompleted'
+
 type PropsType = {
-    data: TodoListType
+    todoList: TodoListType
     onInputNewTask: (todoListId: string, taskTitle: string) => void
     onRemoveTask: (todoListId: string, taskId: string) => void
 }
 
-function TodoList({ data, onInputNewTask, onRemoveTask }: PropsType) {
+function TodoList({ todoList, onInputNewTask, onRemoveTask }: PropsType) {
     const [newTaskTitle, setNewTaskTitle] = useState<string>("")
+
+    const [listTasks, setListTasks] = useState<TaskType[]>([])
+
+    useEffect(() => {
+        setListTasks(todoList.tasks)
+     }, [todoList.tasks])
+
+    function filterTodoListTasks(filterParam: filterParamType) {
+        switch (filterParam) {
+            case "completed": {
+                const completedTasks = todoList.tasks.filter(task => task.isDone)
+                setListTasks(completedTasks)
+                console.log('completed')
+                break
+            }
+            case "uncompleted": {
+                const uncompletedTasks = todoList.tasks.filter(task => !task.isDone)
+                setListTasks(uncompletedTasks)
+                console.log('uncompleted')
+                break
+            }
+            default: {
+                setListTasks(todoList.tasks)
+                console.log('all')
+            }
+        }
+    }
 
     function onNewTaskTitleChange(e: ChangeEvent<HTMLInputElement>) {
         setNewTaskTitle(e.target.value)
@@ -19,14 +48,14 @@ function TodoList({ data, onInputNewTask, onRemoveTask }: PropsType) {
 
     function onAddNewTaskClick() {
         if (newTaskTitle !== "") {
-            onInputNewTask(data.id, newTaskTitle)
+            onInputNewTask(todoList.id, newTaskTitle)
             setNewTaskTitle("")
         }
     }
 
     return (
         <div className={styles.card}>
-            <h3 className={styles.card__title}>{data.title}</h3>
+            <h3 className={styles.card__title}>{todoList.title}</h3>
 
             <div className={styles.card__inputTaskBlock}>
                 <input
@@ -49,18 +78,18 @@ function TodoList({ data, onInputNewTask, onRemoveTask }: PropsType) {
 
             <ul className={styles.card__tasks}>
 
-                {data.tasks.map((task) => {
+                {listTasks.map((task) => {
                     return (
-                        <TaskItem task={task} onRemoveTask={onRemoveTask} todoListId={data.id} key={task.id} />
+                        <TaskItem task={task} onRemoveTask={onRemoveTask} todoListId={todoList.id} key={task.id} />
                     )
                 })}
 
             </ul>
 
             <div className={styles.card__filterBlock}>
-                <button className={styles.card__filterBtn}>All</button>
-                <button className={styles.card__filterBtn}>Completed</button>
-                <button className={styles.card__filterBtn}>Uncompleted</button>
+                <button className={styles.card__filterBtn} onClick={() => { filterTodoListTasks("all") }}>All</button>
+                <button className={styles.card__filterBtn} onClick={() => { filterTodoListTasks("completed") }}>Completed</button>
+                <button className={styles.card__filterBtn} onClick={() => { filterTodoListTasks("uncompleted") }}>Uncompleted</button>
             </div>
 
         </div>

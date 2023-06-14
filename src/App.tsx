@@ -85,6 +85,8 @@ function App() {
       setTodoLists(updatedTodoLists)
     }
 
+    // let filteredTodoLists = [...todoLists]
+
   }
 
   return (
@@ -93,7 +95,7 @@ function App() {
         return (
           <TodoList
             key={list.id}
-            data={list}
+            todoList={list}
             onInputNewTask={onInputNewTask}
             onRemoveTask={onRemoveTask}
           />
