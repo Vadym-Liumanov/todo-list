@@ -2,16 +2,26 @@ import React, { ChangeEvent, useState } from "react"
 import { TodoListType } from "../../App"
 
 import styles from './TodoList.module.css'
+import TaskItem from "../TaskItem/TaskItem"
 
 type PropsType = {
     data: TodoListType
     onInputNewTask: (todoListId: string, taskTitle: string) => void
+    onRemoveTask: (todoListId: string, taskId: string) => void
 }
 
-function TodoList({ data, onInputNewTask }: PropsType) {
+function TodoList({ data, onInputNewTask, onRemoveTask }: PropsType) {
     const [newTaskTitle, setNewTaskTitle] = useState<string>("")
+
     function onNewTaskTitleChange(e: ChangeEvent<HTMLInputElement>) {
         setNewTaskTitle(e.target.value)
+    }
+
+    function onAddNewTaskClick() {
+        if (newTaskTitle !== "") {
+            onInputNewTask(data.id, newTaskTitle)
+            setNewTaskTitle("")
+        }
     }
 
     return (
@@ -28,28 +38,15 @@ function TodoList({ data, onInputNewTask }: PropsType) {
                 />
                 <button
                     className={styles.card__addTaskBtn}
-                    onClick={() => {
-                        if (newTaskTitle !== "") {
-                            onInputNewTask(data.id, newTaskTitle)
-                            setNewTaskTitle("")
-                        }
-                    }}
+                    onClick={onAddNewTaskClick}
                 >+</button>
             </div>
 
             <ul className={styles.card__tasks}>
 
-                {data.tasks.map((it) => {
+                {data.tasks.map((task) => {
                     return (
-                        <li className={styles.card__task} key={it.id}>
-                            <input
-                                type="checkbox"
-                                checked={it.isDone}
-                                className={styles.task__checkInput}
-                            />
-                            <span className={styles.task__name}>{it.taskTitle}</span>
-                            <button className={styles.removeTaskBtn}>-</button>
-                        </li>
+                        <TaskItem task={task} onRemoveTask={onRemoveTask} todoListId={data.id} key={task.id} />
                     )
                 })}
 

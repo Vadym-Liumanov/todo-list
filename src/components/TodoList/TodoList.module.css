@@ -47,35 +47,6 @@
     margin-bottom: 0.8em;
 }
 
-.card__task {
-    line-height: 1.5;
-}
-
-/* .task__checkInput {} */
-
-.task__name {
-    margin-left: 0.8em;
-}
-
-.removeTaskBtn {
-    background-color: var(--main-bg);
-    width: 1.3em;
-    height: 1.3em;
-    border-radius: 4px;
-    margin-left: 2em;
-    border: var(--main-border);
-    font-weight: 500;
-}
-
-.removeTaskBtn:hover {
-    opacity: 0, .9;
-}
-
-.removeTaskBtn:active {
-    position: relative;
-    top: 1px;
-}
-
 .card__filterBlock {
     display: flex;
     gap: 0.5em;

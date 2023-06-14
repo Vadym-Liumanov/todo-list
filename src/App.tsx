@@ -49,22 +49,39 @@ function App() {
 
   const [todoLists, setTodoLists] = useState<TodoListType[]>(initialTodoLists)
 
-  function onInputNewTask(todoListId: string, taskTitle: string) {
-    const newTask: TaskType = {
-      id: v4(),
-      taskTitle: taskTitle,
-      isDone: false
-    }
-    const updatedTodoLists: TodoListType[] = [...todoLists]
-    let updatedIndex = -1
-    updatedTodoLists.forEach((todoList, index) => {
-      if (todoList.id === todoListId) {
-        updatedIndex = index
+  function getTodoListIndexById(todoListId: string) {
+    let todoListIndex = -1
+    todoLists.forEach((list, index) => {
+      if (list.id === todoListId) {
+        todoListIndex = index
       }
     })
+    return todoListIndex
+  }
 
-    if (updatedIndex >= 0) {
-      updatedTodoLists[updatedIndex].tasks.push(newTask)
+  function onInputNewTask(todoListId: string, taskTitle: string) {
+    const updatedTodoListIndex = getTodoListIndexById(todoListId)
+
+    if (updatedTodoListIndex >= 0) {
+      const newTask: TaskType = {
+        id: v4(),
+        taskTitle: taskTitle,
+        isDone: false
+      }
+      const updatedTodoLists: TodoListType[] = [...todoLists]
+      updatedTodoLists[updatedTodoListIndex].tasks.push(newTask)
+      setTodoLists(updatedTodoLists)
+    }
+  }
+
+  function onRemoveTask(todoListId: string, taskId: string) {
+    const updatedTodoListIndex = getTodoListIndexById(todoListId)
+
+    if (updatedTodoListIndex >= 0) {
+      const currentTodoListTasks: TaskType[] = [...todoLists[updatedTodoListIndex].tasks]
+      const newTodoListTasks: TaskType[] = currentTodoListTasks.filter((task) => task.id !== taskId)
+      const updatedTodoLists = [...todoLists]
+      updatedTodoLists[updatedTodoListIndex].tasks = [...newTodoListTasks]
       setTodoLists(updatedTodoLists)
     }
 
@@ -78,6 +95,7 @@ function App() {
             key={list.id}
             data={list}
             onInputNewTask={onInputNewTask}
+            onRemoveTask={onRemoveTask}
           />
         )
       })}
