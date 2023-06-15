@@ -10,16 +10,17 @@ type PropsType = {
     todoList: TodoListType
     onInputNewTask: (todoListId: string, taskTitle: string) => void
     onRemoveTask: (todoListId: string, taskId: string) => void
+    onTaskStatusChange: (todoListId: string, taskId: string, taskStatus: boolean) => void
 }
 
-function TodoList({ todoList, onInputNewTask, onRemoveTask }: PropsType) {
+function TodoList({ todoList, onInputNewTask, onRemoveTask, onTaskStatusChange }: PropsType) {
     const [newTaskTitle, setNewTaskTitle] = useState<string>("")
 
     const [listTasks, setListTasks] = useState<TaskType[]>([])
 
     useEffect(() => {
         setListTasks(todoList.tasks)
-     }, [todoList.tasks])
+    }, [todoList.tasks])
 
     function filterTodoListTasks(filterParam: filterParamType) {
         switch (filterParam) {
@@ -47,8 +48,8 @@ function TodoList({ todoList, onInputNewTask, onRemoveTask }: PropsType) {
     }
 
     function onAddNewTaskClick() {
-        if (newTaskTitle !== "") {
-            onInputNewTask(todoList.id, newTaskTitle)
+        if (newTaskTitle.trim() !== "") {
+            onInputNewTask(todoList.id, newTaskTitle.trim())
             setNewTaskTitle("")
         }
     }
@@ -80,7 +81,13 @@ function TodoList({ todoList, onInputNewTask, onRemoveTask }: PropsType) {
 
                 {listTasks.map((task) => {
                     return (
-                        <TaskItem task={task} onRemoveTask={onRemoveTask} todoListId={todoList.id} key={task.id} />
+                        <TaskItem
+                            key={task.id}
+                            task={task}
+                            todoListId={todoList.id}
+                            onRemoveTask={onRemoveTask}
+                            onTaskStatusChange={onTaskStatusChange}
+                        />
                     )
                 })}
 

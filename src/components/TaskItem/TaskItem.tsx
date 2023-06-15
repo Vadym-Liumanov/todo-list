@@ -7,15 +7,19 @@ type PropsType = {
     task: TaskType
     todoListId: string
     onRemoveTask: (todoListId: string, taskId: string) => void
+    onTaskStatusChange: (todoListId: string, taskId: string, taskStatus: boolean) => void
 }
 
-function TaskItem({ task, onRemoveTask, todoListId }: PropsType) {
+function TaskItem({ task, todoListId, onRemoveTask, onTaskStatusChange }: PropsType) {
     return (
         <li className={styles.card__task}>
             <input
                 type="checkbox"
                 checked={task.isDone}
                 className={styles.task__checkInput}
+                onChange={() => {
+                    onTaskStatusChange(todoListId, task.id, !task.isDone)
+                }}
             />
             <span className={styles.task__name}>{task.taskTitle}</span>
             <button

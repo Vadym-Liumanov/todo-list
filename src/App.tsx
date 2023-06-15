@@ -84,9 +84,23 @@ function App() {
       updatedTodoLists[updatedTodoListIndex].tasks = [...newTodoListTasks]
       setTodoLists(updatedTodoLists)
     }
+  }
 
-    // let filteredTodoLists = [...todoLists]
+  function onTaskStatusChange(todoListId: string, taskId: string, taskStatus: boolean) {
+    const updatedTodoListIndex = getTodoListIndexById(todoListId)
 
+    if (updatedTodoListIndex >= 0) {
+      const currentTodoListTasks: TaskType[] = [...todoLists[updatedTodoListIndex].tasks]
+      const newTodoListTasks: TaskType[] = currentTodoListTasks.map((task) => {
+        if (task.id === taskId) {
+          task.isDone = taskStatus
+        }
+        return task
+      })
+      const updatedTodoLists = [...todoLists]
+      updatedTodoLists[updatedTodoListIndex].tasks = [...newTodoListTasks]
+      setTodoLists(updatedTodoLists)
+    }
   }
 
   return (
@@ -98,6 +112,7 @@ function App() {
             todoList={list}
             onInputNewTask={onInputNewTask}
             onRemoveTask={onRemoveTask}
+            onTaskStatusChange={onTaskStatusChange}
           />
         )
       })}
