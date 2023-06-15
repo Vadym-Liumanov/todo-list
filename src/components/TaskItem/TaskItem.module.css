@@ -1,5 +1,10 @@
-.card__task {
+.card__task,
+.card__task_completed {
     line-height: 1.5;
+}
+
+.card__task_completed {
+    opacity: 0.6;
 }
 
 /* .task__checkInput {} */

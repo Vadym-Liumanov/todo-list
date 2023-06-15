@@ -12,7 +12,7 @@ type PropsType = {
 
 function TaskItem({ task, todoListId, onRemoveTask, onTaskStatusChange }: PropsType) {
     return (
-        <li className={styles.card__task}>
+        <li className={task.isDone ? styles.card__task_completed : styles.card__task}>
             <input
                 type="checkbox"
                 checked={task.isDone}
