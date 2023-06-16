@@ -17,8 +17,8 @@ function TaskItem({ task, todoListId, onRemoveTask, onTaskStatusChange }: PropsT
                 type="checkbox"
                 checked={task.isDone}
                 className={styles.task__checkInput}
-                onChange={() => {
-                    onTaskStatusChange(todoListId, task.id, !task.isDone)
+                onChange={(e) => {
+                    onTaskStatusChange(todoListId, task.id, e.target.checked)
                 }}
             />
             <span className={styles.task__name}>{task.taskTitle}</span>
