@@ -13,9 +13,10 @@ type PropsType = {
     onRemoveTask: (todoListId: string, taskId: string) => void
     onTaskStatusChange: (todoListId: string, taskId: string, taskStatus: boolean) => void
     onTodoListFilterChange: (todoListId: string, filterParam: FilterParamType) => void
+    onRemoveTodoList: (todoListId: string) => void
 }
 
-function TodoList({ todoList, todoListTasks, onInputNewTask, onRemoveTask, onTaskStatusChange, onTodoListFilterChange }: PropsType) {
+function TodoList({ todoList, todoListTasks, onInputNewTask, onRemoveTask, onTaskStatusChange, onTodoListFilterChange, onRemoveTodoList }: PropsType) {
     const [newTaskTitle, setNewTaskTitle] = useState<string>("")
     const [newTaskError, setNewTaskError] = useState<string | null>(null)
 
@@ -52,7 +53,7 @@ function TodoList({ todoList, todoListTasks, onInputNewTask, onRemoveTask, onTas
             </h3>
             <button
                 className={styles.card__removeListBtn}
-                onClick={() => { }}
+                onClick={() => { onRemoveTodoList(todoList.id) }}
             >x</button>
 
             <div className={styles.card__inputTaskBlock}>

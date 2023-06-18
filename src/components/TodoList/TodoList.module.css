@@ -46,12 +46,12 @@
     font-weight: 500;
 }
 
-.card__removeListBtn,
+.card__removeListBtn:hover,
 .card__addTaskBtn:hover {
     opacity: 0, .9;
 }
 
-.card__removeListBtn,
+.card__removeListBtn:active,
 .card__addTaskBtn:active {
     position: relative;
     top: 1px;
@@ -90,4 +90,3 @@
     position: relative;
     top: 1px;
 }
-

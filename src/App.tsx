@@ -34,7 +34,7 @@ function App() {
     {
       id: todoListId_2,
       title: 'What to by',
-      filter: 'active'
+      filter: 'all'
     },
   ]
 
@@ -121,11 +121,18 @@ function App() {
   }
 
   function onRemoveTodoList(todoListId: string) {
-    
+    const newTodoLists = todoLists.filter(list => list.id !== todoListId)
+    setTodoLists([...newTodoLists])
+    delete allTasks[todoListId]
+    setAllTasks({ ...allTasks })
+    console.log(allTasks)
   }
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.card__addNewTodoListBlock}>
+        
+      </div>
       {todoLists.map((list) => {
         return (
           <TodoList
@@ -136,6 +143,7 @@ function App() {
             onRemoveTask={onRemoveTask}
             onTaskStatusChange={onTaskStatusChange}
             onTodoListFilterChange={onTodoListFilterChange}
+            onRemoveTodoList={onRemoveTodoList}
           />
         )
       })}
