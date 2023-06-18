@@ -10,14 +10,14 @@ export type FilterParamType = 'all' | 'completed' | 'active'
 type PropsType = {
     todoList: TodoListType
     todoListTasks: TaskType[]
-    onInputNewTask: (todoListId: string, taskTitle: string) => void
-    onRemoveTask: (todoListId: string, taskId: string) => void
-    onTaskStatusChange: (todoListId: string, taskId: string, taskStatus: boolean) => void
-    onTodoListFilterChange: (todoListId: string, filterParam: FilterParamType) => void
-    onRemoveTodoList: (todoListId: string) => void
+    addNewTask: (todoListId: string, taskTitle: string) => void
+    removeTask: (todoListId: string, taskId: string) => void
+    changeTaskStatus: (todoListId: string, taskId: string, taskStatus: boolean) => void
+    changeTodoListFilter: (todoListId: string, filterParam: FilterParamType) => void
+    removeTodoList: (todoListId: string) => void
 }
 
-function TodoList({ todoList, todoListTasks, onInputNewTask, onRemoveTask, onTaskStatusChange, onTodoListFilterChange, onRemoveTodoList }: PropsType) {
+function TodoList({ todoList, todoListTasks, addNewTask, removeTask, changeTaskStatus, changeTodoListFilter, removeTodoList }: PropsType) {
 
     let filteredTasks = [...todoListTasks]
 
@@ -30,7 +30,7 @@ function TodoList({ todoList, todoListTasks, onInputNewTask, onRemoveTask, onTas
     }
 
     function onAddNewTaskClick(title: string) {
-        onInputNewTask(todoList.id, title)
+        addNewTask(todoList.id, title)
     }
 
     return (
@@ -40,7 +40,7 @@ function TodoList({ todoList, todoListTasks, onInputNewTask, onRemoveTask, onTas
             </h3>
             <button
                 className={styles.card__removeListBtn}
-                onClick={() => { onRemoveTodoList(todoList.id) }}
+                onClick={() => { removeTodoList(todoList.id) }}
             >x</button>
 
             <div className={styles.card__inputTaskBlock}>
@@ -60,8 +60,8 @@ function TodoList({ todoList, todoListTasks, onInputNewTask, onRemoveTask, onTas
                             key={task.id}
                             task={task}
                             todoListId={todoList.id}
-                            onRemoveTask={onRemoveTask}
-                            onTaskStatusChange={onTaskStatusChange}
+                            removeTask={removeTask}
+                            changeTaskStatus={changeTaskStatus}
                         />
                     )
                 })}
@@ -71,19 +71,19 @@ function TodoList({ todoList, todoListTasks, onInputNewTask, onRemoveTask, onTas
             <div className={styles.card__filterBlock}>
                 <button
                     className={(todoList.filter === 'all') ? styles.card__filterBtn_active : styles.card__filterBtn}
-                    onClick={() => { onTodoListFilterChange(todoList.id, 'all') }}
+                    onClick={() => { changeTodoListFilter(todoList.id, 'all') }}
                 >
                     All
                 </button>
                 <button
                     className={(todoList.filter === 'completed') ? styles.card__filterBtn_active : styles.card__filterBtn}
-                    onClick={() => { onTodoListFilterChange(todoList.id, 'completed') }}
+                    onClick={() => { changeTodoListFilter(todoList.id, 'completed') }}
                 >
                     Completed
                 </button>
                 <button
                     className={(todoList.filter === 'active') ? styles.card__filterBtn_active : styles.card__filterBtn}
-                    onClick={() => { onTodoListFilterChange(todoList.id, 'active') }}
+                    onClick={() => { changeTodoListFilter(todoList.id, 'active') }}
                 >
                     Active
                 </button>

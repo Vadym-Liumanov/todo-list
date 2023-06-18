@@ -6,11 +6,11 @@ import { TaskType } from "../../App"
 type PropsType = {
     task: TaskType
     todoListId: string
-    onRemoveTask: (todoListId: string, taskId: string) => void
-    onTaskStatusChange: (todoListId: string, taskId: string, taskStatus: boolean) => void
+    removeTask: (todoListId: string, taskId: string) => void
+    changeTaskStatus: (todoListId: string, taskId: string, taskStatus: boolean) => void
 }
 
-function TaskItem({ task, todoListId, onRemoveTask, onTaskStatusChange }: PropsType) {
+function TaskItem({ task, todoListId, removeTask, changeTaskStatus }: PropsType) {
     return (
         <li className={task.isDone ? styles.card__task_completed : styles.card__task}>
             <input
@@ -18,13 +18,13 @@ function TaskItem({ task, todoListId, onRemoveTask, onTaskStatusChange }: PropsT
                 checked={task.isDone}
                 className={styles.task__checkInput}
                 onChange={(e) => {
-                    onTaskStatusChange(todoListId, task.id, e.target.checked)
+                    changeTaskStatus(todoListId, task.id, e.target.checked)
                 }}
             />
             <span className={styles.task__name}>{task.taskTitle}</span>
             <button
                 className={styles.removeTaskBtn}
-                onClick={() => { onRemoveTask(todoListId, task.id) }}
+                onClick={() => { removeTask(todoListId, task.id) }}
             >
                 x
             </button>

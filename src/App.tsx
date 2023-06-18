@@ -89,7 +89,7 @@ function App() {
   const [todoLists, setTodoLists] = useState<TodoListType[]>(initialTodoLists)
   const [allTasks, setAllTasks] = useState<TasksType>(initialAllTasks)
 
-  function onInputNewTask(todoListId: string, taskTitle: string) {
+  function addNewTask(todoListId: string, taskTitle: string) {
     const newTask: TaskType = {
       id: v4(),
       taskTitle: taskTitle,
@@ -99,13 +99,13 @@ function App() {
     setAllTasks({ ...allTasks })
   }
 
-  function onRemoveTask(todoListId: string, taskId: string) {
+  function removeTask(todoListId: string, taskId: string) {
     const newTasks = allTasks[todoListId].filter(task => task.id !== taskId)
     allTasks[todoListId] = [...newTasks]
     setAllTasks({ ...allTasks })
   }
 
-  function onTaskStatusChange(todoListId: string, taskId: string, taskStatus: boolean) {
+  function changeTaskStatus(todoListId: string, taskId: string, taskStatus: boolean) {
     const changedTask = allTasks[todoListId].find(task => task.id === taskId)
     if (changedTask) {
       changedTask.isDone = taskStatus
@@ -113,7 +113,7 @@ function App() {
     setAllTasks({ ...allTasks })
   }
 
-  function onTodoListFilterChange(todoListId: string, filterParam: FilterParamType) {
+  function changeTodoListFilter(todoListId: string, filterParam: FilterParamType) {
     const changedTodoList = todoLists.find(list => list.id === todoListId)
     if (changedTodoList) {
       changedTodoList.filter = filterParam
@@ -121,7 +121,7 @@ function App() {
     setTodoLists([...todoLists])
   }
 
-  function onRemoveTodoList(todoListId: string) {
+  function removeTodoList(todoListId: string) {
     const newTodoLists = todoLists.filter(list => list.id !== todoListId)
     setTodoLists([...newTodoLists])
     delete allTasks[todoListId]
@@ -154,11 +154,11 @@ function App() {
             key={list.id}
             todoList={list}
             todoListTasks={allTasks[list.id]}
-            onInputNewTask={onInputNewTask}
-            onRemoveTask={onRemoveTask}
-            onTaskStatusChange={onTaskStatusChange}
-            onTodoListFilterChange={onTodoListFilterChange}
-            onRemoveTodoList={onRemoveTodoList}
+            addNewTask={addNewTask}
+            removeTask={removeTask}
+            changeTaskStatus={changeTaskStatus}
+            changeTodoListFilter={changeTodoListFilter}
+            removeTodoList={removeTodoList}
           />
         )
       })}
