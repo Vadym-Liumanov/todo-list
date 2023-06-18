@@ -3,6 +3,7 @@ import { v4 } from 'uuid'
 
 import styles from './App.module.css'
 import TodoList, { FilterParamType } from './components/TodoList/TodoList'
+import AddItemForm from './components/AddItemForm/AddItemForm'
 
 export type TaskType = {
   id: string
@@ -125,13 +126,27 @@ function App() {
     setTodoLists([...newTodoLists])
     delete allTasks[todoListId]
     setAllTasks({ ...allTasks })
-    console.log(allTasks)
+  }
+
+  function addTodoList(title: string) {
+    const newList: TodoListType = {
+      id: v4(),
+      title: title,
+      filter: 'all'
+    }
+    setTodoLists([...todoLists, newList])
+    allTasks[newList.id] = []
+    setAllTasks({ ...allTasks })
   }
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.card__addNewTodoListBlock}>
-        
+      <div className={styles.addTodoListblock}>
+        <h3 className={styles.addTodoListblock__header}>Add new TodoList</h3>
+        <AddItemForm
+          addItem={addTodoList}
+          placeholder='input list title'
+        />
       </div>
       {todoLists.map((list) => {
         return (

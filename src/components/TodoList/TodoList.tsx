@@ -1,8 +1,9 @@
-import React, { ChangeEvent, useState } from "react"
+import React from "react"
 import { TaskType, TodoListType } from "../../App"
 
 import styles from './TodoList.module.css'
 import TaskItem from "../TaskItem/TaskItem"
+import AddItemForm from "../AddItemForm/AddItemForm"
 
 export type FilterParamType = 'all' | 'completed' | 'active'
 
@@ -17,8 +18,6 @@ type PropsType = {
 }
 
 function TodoList({ todoList, todoListTasks, onInputNewTask, onRemoveTask, onTaskStatusChange, onTodoListFilterChange, onRemoveTodoList }: PropsType) {
-    const [newTaskTitle, setNewTaskTitle] = useState<string>("")
-    const [newTaskError, setNewTaskError] = useState<string | null>(null)
 
     let filteredTasks = [...todoListTasks]
 
@@ -30,20 +29,8 @@ function TodoList({ todoList, todoListTasks, onInputNewTask, onRemoveTask, onTas
         filteredTasks = todoListTasks.filter(task => task.isDone)
     }
 
-    function onNewTaskTitleChange(e: ChangeEvent<HTMLInputElement>) {
-        setNewTaskTitle(e.target.value)
-        setNewTaskError(null)
-    }
-
-    function onAddNewTaskClick() {
-        if (newTaskTitle.trim() !== "") {
-            onInputNewTask(todoList.id, newTaskTitle.trim())
-            setNewTaskTitle("")
-            setNewTaskError(null)
-        }
-        else {
-            setNewTaskError('Task title is required')
-        }
+    function onAddNewTaskClick(title: string) {
+        onInputNewTask(todoList.id, title)
     }
 
     return (
@@ -57,26 +44,11 @@ function TodoList({ todoList, todoListTasks, onInputNewTask, onRemoveTask, onTas
             >x</button>
 
             <div className={styles.card__inputTaskBlock}>
-                <input
-                    type="text"
-                    placeholder="input new task"
-                    className={newTaskError ? styles.card__taskTitleInput_error : styles.card__taskTitleInput}
-                    value={newTaskTitle}
-                    onChange={onNewTaskTitleChange}
-                    onKeyUp={(e) => {
-                        if (e.ctrlKey && e.code === 'Enter') {
-                            onAddNewTaskClick()
-                        }
-                    }}
-                />
-                <button
-                    className={styles.card__addTaskBtn}
-                    onClick={onAddNewTaskClick}
-                >+</button>
 
-                {newTaskError &&
-                    <div className={styles.card__taskTitleError}>{newTaskError}</div>
-                }
+                <AddItemForm
+                    addItem={onAddNewTaskClick}
+                    placeholder="input task name"
+                />
 
             </div>
 

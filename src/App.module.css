@@ -5,3 +5,16 @@
     padding: 1em 2em;
     background-color: var(--page-bg);
 }
+
+.addTodoListblock {
+    border-bottom: 1px solid var(--black);
+    padding: 1em;
+}
+
+.addTodoListblock__header {
+    font-size: 1.2em;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    line-height: 2;
+    margin-left: 1em;
+}

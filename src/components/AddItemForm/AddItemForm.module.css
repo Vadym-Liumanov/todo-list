@@ -1,0 +1,39 @@
+.form {
+    margin-bottom: 0.8em;
+}
+
+.titleInput,
+.titleInput_error {
+    background-color: var(--main-bg);
+    padding: 0 0.8em;
+    border-radius: 4px;
+    line-height: 1.8;
+}
+
+.titleInput_error {
+    border: 1px solid var(--error-color);
+}
+
+.errorMsg {
+    color: var(--error-color);
+    padding: 0.5em;
+}
+
+.addBtn {
+    background-color: var(--main-bg);
+    width: 1.8em;
+    height: 1.8em;
+    border-radius: 4px;
+    margin-left: 1em;
+    border: var(--main-border);
+    font-weight: 500;
+}
+
+.addBtn:hover {
+    opacity: 0, .9;
+}
+
+s.addBtn:active {
+    position: relative;
+    top: 1px;
+}
