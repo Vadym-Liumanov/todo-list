@@ -89,6 +89,22 @@ function App() {
   const [todoLists, setTodoLists] = useState<TodoListType[]>(initialTodoLists)
   const [allTasks, setAllTasks] = useState<TasksType>(initialAllTasks)
 
+  function updateTodoListTitle(title: string, todoListId: string) {
+    const updatedTodoList = todoLists.find(list => list.id === todoListId)
+    if (updatedTodoList && title) {
+      updatedTodoList.title = title
+      setTodoLists([...todoLists])
+    }
+  }
+
+  function updateTaskTitle(title: string, todoListId: string, taskId: string) {
+    const updatedTask = allTasks[todoListId].find(task => task.id === taskId)
+    if (updatedTask && title) {
+      updatedTask.taskTitle = title
+      setAllTasks({ ...allTasks })
+    }
+  }
+
   function addNewTask(todoListId: string, taskTitle: string) {
     const newTask: TaskType = {
       id: v4(),
@@ -109,16 +125,16 @@ function App() {
     const changedTask = allTasks[todoListId].find(task => task.id === taskId)
     if (changedTask) {
       changedTask.isDone = taskStatus
+      setAllTasks({ ...allTasks })
     }
-    setAllTasks({ ...allTasks })
   }
 
   function changeTodoListFilter(todoListId: string, filterParam: FilterParamType) {
     const changedTodoList = todoLists.find(list => list.id === todoListId)
     if (changedTodoList) {
       changedTodoList.filter = filterParam
+      setTodoLists([...todoLists])
     }
-    setTodoLists([...todoLists])
   }
 
   function removeTodoList(todoListId: string) {
@@ -159,6 +175,8 @@ function App() {
             changeTaskStatus={changeTaskStatus}
             changeTodoListFilter={changeTodoListFilter}
             removeTodoList={removeTodoList}
+            updateTaskTitle={updateTaskTitle}
+            updateTodoListTitle={updateTodoListTitle}
           />
         )
       })}

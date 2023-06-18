@@ -4,6 +4,7 @@ import { TaskType, TodoListType } from "../../App"
 import styles from './TodoList.module.css'
 import TaskItem from "../TaskItem/TaskItem"
 import AddItemForm from "../AddItemForm/AddItemForm"
+import EditableSpan from "../EditableSpan/EditableSpan"
 
 export type FilterParamType = 'all' | 'completed' | 'active'
 
@@ -15,9 +16,11 @@ type PropsType = {
     changeTaskStatus: (todoListId: string, taskId: string, taskStatus: boolean) => void
     changeTodoListFilter: (todoListId: string, filterParam: FilterParamType) => void
     removeTodoList: (todoListId: string) => void
+    updateTaskTitle: (title: string, todoListId: string, taskId: string) => void
+    updateTodoListTitle: (title: string, todoListId: string) => void
 }
 
-function TodoList({ todoList, todoListTasks, addNewTask, removeTask, changeTaskStatus, changeTodoListFilter, removeTodoList }: PropsType) {
+function TodoList({ todoList, todoListTasks, addNewTask, removeTask, changeTaskStatus, changeTodoListFilter, removeTodoList, updateTaskTitle, updateTodoListTitle }: PropsType) {
 
     let filteredTasks = [...todoListTasks]
 
@@ -29,14 +32,18 @@ function TodoList({ todoList, todoListTasks, addNewTask, removeTask, changeTaskS
         filteredTasks = todoListTasks.filter(task => task.isDone)
     }
 
-    function onAddNewTaskClick(title: string) {
+    function addTask(title: string) {
         addNewTask(todoList.id, title)
+    }
+
+    function updateTodoList(title: string) {
+        updateTodoListTitle(title, todoList.id)
     }
 
     return (
         <div className={styles.card}>
             <h3 className={styles.card__title}>
-                {todoList.title}
+                <EditableSpan title={todoList.title} updateSpan={updateTodoList} />
             </h3>
             <button
                 className={styles.card__removeListBtn}
@@ -44,12 +51,7 @@ function TodoList({ todoList, todoListTasks, addNewTask, removeTask, changeTaskS
             >x</button>
 
             <div className={styles.card__inputTaskBlock}>
-
-                <AddItemForm
-                    addItem={onAddNewTaskClick}
-                    placeholder="input task name"
-                />
-
+                <AddItemForm addItem={addTask} placeholder="input task name" />
             </div>
 
             <ul className={styles.card__tasks}>
@@ -62,6 +64,7 @@ function TodoList({ todoList, todoListTasks, addNewTask, removeTask, changeTaskS
                             todoListId={todoList.id}
                             removeTask={removeTask}
                             changeTaskStatus={changeTaskStatus}
+                            updateTaskTitle={updateTaskTitle}
                         />
                     )
                 })}

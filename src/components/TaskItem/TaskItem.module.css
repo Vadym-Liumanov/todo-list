@@ -7,10 +7,8 @@
     opacity: 0.6;
 }
 
-/* .task__checkInput {} */
-
-.task__name {
-    margin-left: 0.8em;
+.task__checkInput {
+    margin-right: 0.8em;
 }
 
 .removeTaskBtn {
