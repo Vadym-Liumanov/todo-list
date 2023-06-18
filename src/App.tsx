@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { v4 } from 'uuid'
 
 import styles from './App.module.css'
-import TodoList from './components/TodoList/TodoList'
+import TodoList, { FilterParamType } from './components/TodoList/TodoList'
 
 export type TaskType = {
   id: string
@@ -13,94 +13,115 @@ export type TaskType = {
 export type TodoListType = {
   id: string
   title: string
-  tasks: TaskType[]
+  filter: FilterParamType
+}
+
+export type TasksType = {
+  [key: string]: TaskType[]
 }
 
 function App() {
 
+  const todoListId_1 = v4()
+  const todoListId_2 = v4()
+
   const initialTodoLists: TodoListType[] = [
     {
-      id: v4(),
+      id: todoListId_1,
       title: 'What to lean',
-      tasks: [
-        {
-          id: v4(),
-          taskTitle: 'HTML',
-          isDone: true
-        },
-        {
-          id: v4(),
-          taskTitle: 'CSS',
-          isDone: true
-        },
-        {
-          id: v4(),
-          taskTitle: 'JS',
-          isDone: true
-        },
-        {
-          id: v4(),
-          taskTitle: 'React',
-          isDone: false
-        }
-      ]
+      filter: 'all'
+    },
+    {
+      id: todoListId_2,
+      title: 'What to by',
+      filter: 'active'
     },
   ]
 
-  const [todoLists, setTodoLists] = useState<TodoListType[]>(initialTodoLists)
-
-  function getTodoListIndexById(todoListId: string) {
-    let todoListIndex = -1
-    todoLists.forEach((list, index) => {
-      if (list.id === todoListId) {
-        todoListIndex = index
-      }
-    })
-    return todoListIndex
-  }
-
-  function onInputNewTask(todoListId: string, taskTitle: string) {
-    const updatedTodoListIndex = getTodoListIndexById(todoListId)
-
-    if (updatedTodoListIndex >= 0) {
-      const newTask: TaskType = {
+  const initialAllTasks: TasksType = {
+    [todoListId_1]: [
+      {
         id: v4(),
-        taskTitle: taskTitle,
+        taskTitle: 'HTML',
+        isDone: true
+      },
+      {
+        id: v4(),
+        taskTitle: 'CSS',
+        isDone: true
+      },
+      {
+        id: v4(),
+        taskTitle: 'JS',
+        isDone: true
+      },
+      {
+        id: v4(),
+        taskTitle: 'React',
         isDone: false
       }
-      const updatedTodoLists: TodoListType[] = [...todoLists]
-      updatedTodoLists[updatedTodoListIndex].tasks.push(newTask)
-      setTodoLists(updatedTodoLists)
+    ],
+    [todoListId_2]: [
+      {
+        id: v4(),
+        taskTitle: 'milk',
+        isDone: true
+      },
+      {
+        id: v4(),
+        taskTitle: 'pizza',
+        isDone: true
+      },
+      {
+        id: v4(),
+        taskTitle: 'car',
+        isDone: false
+      },
+      {
+        id: v4(),
+        taskTitle: 'flat',
+        isDone: false
+      }
+    ],
+  }
+
+  const [todoLists, setTodoLists] = useState<TodoListType[]>(initialTodoLists)
+  const [allTasks, setAllTasks] = useState<TasksType>(initialAllTasks)
+
+  function onInputNewTask(todoListId: string, taskTitle: string) {
+    const newTask: TaskType = {
+      id: v4(),
+      taskTitle: taskTitle,
+      isDone: false
     }
+    allTasks[todoListId] = [...allTasks[todoListId], newTask]
+    setAllTasks({ ...allTasks })
   }
 
   function onRemoveTask(todoListId: string, taskId: string) {
-    const updatedTodoListIndex = getTodoListIndexById(todoListId)
-
-    if (updatedTodoListIndex >= 0) {
-      const currentTodoListTasks: TaskType[] = [...todoLists[updatedTodoListIndex].tasks]
-      const newTodoListTasks: TaskType[] = currentTodoListTasks.filter((task) => task.id !== taskId)
-      const updatedTodoLists = [...todoLists]
-      updatedTodoLists[updatedTodoListIndex].tasks = [...newTodoListTasks]
-      setTodoLists(updatedTodoLists)
-    }
+    const newTasks = allTasks[todoListId].filter(task => task.id !== taskId)
+    allTasks[todoListId] = [...newTasks]
+    setAllTasks({ ...allTasks })
   }
 
   function onTaskStatusChange(todoListId: string, taskId: string, taskStatus: boolean) {
-    const updatedTodoListIndex = getTodoListIndexById(todoListId)
-
-    if (updatedTodoListIndex >= 0) {
-      const currentTodoListTasks: TaskType[] = [...todoLists[updatedTodoListIndex].tasks]
-      const newTodoListTasks: TaskType[] = currentTodoListTasks.map((task) => {
-        if (task.id === taskId) {
-          task.isDone = taskStatus
-        }
-        return task
-      })
-      const updatedTodoLists = [...todoLists]
-      updatedTodoLists[updatedTodoListIndex].tasks = [...newTodoListTasks]
-      setTodoLists(updatedTodoLists)
+    const changedTask = allTasks[todoListId].find(task => task.id === taskId)
+    if (changedTask) {
+      changedTask.isDone = taskStatus
     }
+    setAllTasks({ ...allTasks })
+  }
+
+  function onTodoListFilterChange(todoListId: string, filterParam: FilterParamType) {
+    const changedTodoList = todoLists.find(list => list.id === todoListId)
+    if (changedTodoList) {
+      changedTodoList.filter = filterParam
+    }
+    setTodoLists([...todoLists])
+  }
+
+  function onRemoveTodoList(todoListId: string) {
+    
   }
 
   return (
@@ -110,9 +131,11 @@ function App() {
           <TodoList
             key={list.id}
             todoList={list}
+            todoListTasks={allTasks[list.id]}
             onInputNewTask={onInputNewTask}
             onRemoveTask={onRemoveTask}
             onTaskStatusChange={onTaskStatusChange}
+            onTodoListFilterChange={onTodoListFilterChange}
           />
         )
       })}

@@ -26,7 +26,7 @@ function TaskItem({ task, todoListId, onRemoveTask, onTaskStatusChange }: PropsT
                 className={styles.removeTaskBtn}
                 onClick={() => { onRemoveTask(todoListId, task.id) }}
             >
-                -
+                x
             </button>
         </li>
     )
